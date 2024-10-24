@@ -17,6 +17,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(string(dump))
+	pp.Printf("URL: %s\n", r.URL.String())
+	pp.Printf("Query: %v\n", r.URL.Query())
+	pp.Printf("Proto: %s\n", r.Proto)
+	pp.Printf("Method: %s\n", r.Method)
+	pp.Printf("Header: %v\n", r.Header)
 	fmt.Fprintf(w, "<html><body>hello</body></html>\n")
 }
 
