@@ -4,26 +4,18 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
-	"net/url"
 )
 
 func main()  {
-	proxyUrl, err := url.Parse("http://localhost:18888/cookie")
-	if err != nil {
-		panic(err)
-	}
+	transport := &http.Transport{}
+	transport.RegisterProtocol("file", http.NewFileTransport(http.Dir(".")))
 	client := http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyURL(proxyUrl),
-		},
+		Transport: transport,
 	}
-	resp, err := client.Get("http://github.com")
+	resp, err := client.Get("file://./main.go")
 	if err != nil {
 		panic(err)
 	}
 	dump, err := httputil.DumpResponse(resp, true)
-	if err != nil {
-		panic(err)
-	}
 	log.Println(string(dump))
 }
